@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<div id="app">
+    <h1>Calculate Shipping Price</h1>
+    <form @submit.prevent="calculatePrice" method="post">
+        <label for="weight">Weight:</label>
+        <input type="number" id="weight" name="weight" v-model="weight" required>
+        <br>
+        <label for="carrier">Carrier:</label>
+        <select id="carrier" name="carrier" v-model="carrier" required>
+        <option value="TransCompany">TransCompany</option>
+            <option value="PackGroup">PackGroup</option>
+        </select>
+        <br>
+        <button type="submit" >Calculate Price</button>
+    </form>
+    <div v-if="price !== null">
+        <h2>Shipping Price:</h2>
+        <p>{{ price }} EUR</p>
+    </div>
+</div>
+
+<script src="{{ asset('build/app.js') }}"></script>
+
+</body>
 </html>
